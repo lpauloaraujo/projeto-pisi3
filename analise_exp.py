@@ -40,9 +40,9 @@ def dados_nulos(data_frame):
     st.header("Dados em falta por coluna")
     st.write(data_frame.isnull().sum())
 
-def main():
+def analise_exploratoria():
 #preparar as visualizações
-    df = carregar_dados("TMDB_movie_dataset_v11.parquet")
+    df = carregar_dados("data/TMDB_movie_dataset_v11.parquet")
 
     #criar a interface do streamlit
     st.title("Análise Exploratória")
@@ -90,4 +90,4 @@ def main():
         dados_nulos(df)
 
 if __name__ == '__main__':
-    main()
+    analise_exploratoria()
