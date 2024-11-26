@@ -28,12 +28,35 @@ def analise_categorica(data_frame, coluna, modo):
         aparicoes_dados = dados_separados.value_counts().sort_values(ascending = False)
         st.write(aparicoes_dados)
 
-def grafico_barras(data_frame, coluna):
+def grafico_barras(data_frame, coluna, titulo):
     st.header(f"Gráfico de barras sobre a coluna '{coluna}'")
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending = False)
     aparicoes_dados_df = aparicoes_dados.reset_index(name = 'Quantidade')
-    fig = px.bar(data_frame = aparicoes_dados_df, x = coluna, y = 'Quantidade', title = 'Gráfico')
+    fig = px.bar(data_frame = aparicoes_dados_df, x = coluna, y = 'Quantidade', title = titulo)
+    return fig
+
+def diagrama_pareto(data_frame, coluna, titulo):
+    #Contando as aparições de dados
+    dados_separados = dataset[coluna].str.split(', ').explode()
+    aparicoes_dados = dados_separados.value_counts().sort_values(ascending = False)
+    agrupado = aparicoes_dados.reset_index(name='Contagem')
+    agrupado = agrupado.sort_values('Contagem', ascending=False)
+
+    #Criando a série do somas acumulativas
+    agrupado['Acumulado'] = agrupado['Contagem'].cumsum() / agrupado['Contagem'].sum() * 100
+
+    #Criando a barra 'outros' após a linha atingir os 80%
+    agrupado_principal = agrupado[agrupado['Acumulado'] <= 80]
+    agrupado_outros = agrupado[agrupado['Acumulado'] > 80]
+    outros_contagem = agrupado_outros['Contagem'].sum()
+    linha_outros = pd.DataFrame({coluna: ['Outros'], 'Contagem': [outros_contagem], 'Acumulado': [100]})
+    agrupado_principal = pd.concat([agrupado_principal, linha_outros], ignore_index=True)
+
+    #Criando o diagrama em si
+    fig = px.bar(agrupado_principal, x=coluna, y='Contagem', title = titulo, labels={'Contagem': 'Contagem'})
+    fig.add_scatter(x=agrupado_principal[coluna], y=agrupado_principal['Acumulado'], mode='lines+markers', name='Porcentagem', line=dict(color='red', width=2), yaxis='y2')
+    fig.update_layout(yaxis2=dict( title="Porcentagem (%)", overlaying='y', side='right', showgrid=False), margin=dict(l=40, r=40, t=40, b=40))
     return fig
 
 def dados_nulos(data_frame):
@@ -42,7 +65,7 @@ def dados_nulos(data_frame):
 
 def main():
 #preparar as visualizações
-    df = carregar_dados("TMDB_movie_dataset_v11.parquet")
+    df = carregar_dados("data/TMDB_movie_dataset_v11.parquet")
 
     #criar a interface do streamlit
     st.title("Análise Exploratória")
@@ -83,8 +106,10 @@ def main():
         st.write(df.describe())
 
     elif opcoes == 'Gráficos':
-        st.plotly_chart(grafico_barras(df, 'genres'))
-        st.plotly_chart(grafico_barras(df, 'status'))
+        st.plotly_chart(grafico_barras(df, 'genres', 'Aparições de gêneros nas produções'))
+        st.plotly_chart(grafico_barras(df, 'status', 'Estado de lançamento das produções'))
+        st.plotly_chart(diagrama_pareto(df, 'production_countries', 'Envolvimento de países nas produções'))
+        st.plotly_chart(diagrama_pareto(df, 'spoken_languages', 'Línguas faladas nas produções'))
 
     elif opcoes == 'Dados Nulos':
         dados_nulos(df)
