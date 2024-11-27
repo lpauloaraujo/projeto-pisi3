@@ -38,7 +38,7 @@ def grafico_barras(data_frame, coluna, titulo):
 
 def diagrama_pareto(data_frame, coluna, titulo):
     #Contando as aparições de dados
-    dados_separados = dataset[coluna].str.split(', ').explode()
+    dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending = False)
     agrupado = aparicoes_dados.reset_index(name='Contagem')
     agrupado = agrupado.sort_values('Contagem', ascending=False)
@@ -63,7 +63,7 @@ def dados_nulos(data_frame):
     st.header("Dados em falta por coluna")
     st.write(data_frame.isnull().sum())
 
-def main():
+def analise_exploratoria():
 #preparar as visualizações
     df = carregar_dados("data/TMDB_movie_dataset_v11.parquet")
 
@@ -115,4 +115,4 @@ def main():
         dados_nulos(df)
 
 if __name__ == '__main__':
-    main()
+    analise_exploratoria()
