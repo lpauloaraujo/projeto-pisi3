@@ -27,6 +27,12 @@ def grafico_barras(data_frame, coluna, titulo):
         title=titulo,
         
     )
+
+    fig.update_layout(
+        xaxis_title=coluna,
+        yaxis_title="Quantidade",
+        xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
+    )
     return fig
 
 
