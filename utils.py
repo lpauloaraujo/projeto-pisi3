@@ -102,8 +102,8 @@ def diagrama_pareto(data_frame, coluna, titulo):
     'México': 'green',
     'China': 'red',
     'Russia': 'blue',
-    'União Soviética': 'red'
-    'Outros: grey'
+    'União Soviética': 'red',
+    'Outros': 'grey'
     }
 
     if coluna == 'spoken_languages':
@@ -128,7 +128,14 @@ def diagrama_pareto(data_frame, coluna, titulo):
     agrupado_principal = pd.concat([agrupado_principal, linha_outros], ignore_index=True)
 
     #Criando o diagrama em si
-    fig = px.bar(agrupado_principal, x=coluna, y='Contagem', title=titulo, labels={'Contagem': 'Contagem'})
+    fig = px.bar(
+        agrupado_principal,
+        x=coluna,
+        y='Contagem',
+        title=titulo,
+        color=coluna,
+        color_discrete_map=cores,
+        labels={'Contagem': 'Contagem'})
     fig.add_scatter(
         x=agrupado_principal[coluna],
         y=agrupado_principal['Acumulado'],
@@ -136,8 +143,6 @@ def diagrama_pareto(data_frame, coluna, titulo):
         name='Porcentagem',
         line=dict(color='red', width=2),
         yaxis='y2',
-        color=coluna,  # Usar os valores do eixo X para definir as cores
-        color_discrete_map=cores
     )
     fig.update_layout(
         yaxis2=dict(title="Porcentagem (%)", overlaying='y', side='right', showgrid=False),
