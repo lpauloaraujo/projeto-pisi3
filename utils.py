@@ -18,47 +18,89 @@ def df_tail(data_frame):
 
 def grafico_barras(data_frame, coluna, titulo):
 
-    cores_generos = {'Drama': 'blue',
-    'Documentário': 'blue',
-    'Comédia':'yellow',
+    cores_generos = {
+    'Drama': 'blue',
+    'Documentário': 'red',
+    'Comédia': 'green',
     'Animação': 'yellow',
-    'Terror': 'black',
-    'Romance': 'red',
-    'Música': 'purple',
-    'Suspense': 'grey',
-    'Ação': 'red',
-    'Crime': 'red',
-    'Família': 'green',
-    'Filme de TV': 'purple',
-    'Aventura': 'yellow',
-    'Fantasia': 'green',
-    'Ficção Científica': 'blue',
-    'Mistério': 'grey',
-    'História': 'purple',
-    'Guerra': 'red',
-    'Faroeste': 'yellow'}
+    'Terror': 'purple',
+    'Romance': 'blue',
+    'Música': 'red',
+    'Suspense': 'green',
+    'Ação': 'yellow',
+    'Crime': 'purple',
+    'Família': 'blue',
+    'Filme de TV': 'red',
+    'Aventura': 'green',
+    'Fantasia': 'yellow',
+    'Ficção Científica': 'purple',
+    'Mistério': 'blue',
+    'História': 'red',
+    'Guerra': 'green',
+    'Faroeste': 'yellow'
+    }
+
+    cores_status = {
+    'Lançado': 'green',
+    'Rumor': 'red',
+    'Pós-Produção': 'red',
+    'Em Produção': 'red',
+    'Planejado': 'red'
+    }
+
+    cores_linguas = {
+    'Inglês': 'red',
+    'Francês': 'blue',
+    'Espanhol': 'yellow',
+    'Japonês': 'white',
+    'Alemão': 'black',
+    'Sem Idioma': 'grey',
+    'Russo': 'brown',
+    'Português': 'green',
+
+    }
 
     if coluna == 'genres':
         cores = cores_generos
+    elif coluna == 'status':
+        cores = cores_status
+    elif coluna == 'spoken_languages':
+        cores = cores_linguas
+
 
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
     aparicoes_dados_df = aparicoes_dados.reset_index(name='Quantidade')
-    fig = px.bar(
-        data_frame=aparicoes_dados_df,
-        x= coluna,
-        y='Quantidade',
-        title=titulo,
-        color=coluna,  # Usar os valores do eixo X para definir as cores
-        color_discrete_map=cores
-    )
+    if coluna in ['genres', 'spoken_languages', 'status']:
+        fig = px.bar(
+            data_frame=aparicoes_dados_df,
+            x= coluna,
+            y='Quantidade',
+            title=titulo,
+            color=coluna,  # Usar os valores do eixo X para definir as cores
+            color_discrete_map=cores
+        )
 
-    fig.update_layout(
-        xaxis_title=coluna,
-        yaxis_title="Quantidade",
-        xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
-    )
-    return fig
+        fig.update_layout(
+            xaxis_title=coluna,
+            yaxis_title="Quantidade",
+            xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
+        )
+        return fig
+    else:
+        fig = px.bar(
+            data_frame=aparicoes_dados_df,
+            x= coluna,
+            y='Quantidade',
+            title=titulo,
+        )
+
+        fig.update_layout(
+            xaxis_title=coluna,
+            yaxis_title="Quantidade",
+            xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
+        )
+        return fig
 
 
 def diagrama_pareto(data_frame, coluna, titulo):
