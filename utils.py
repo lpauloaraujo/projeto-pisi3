@@ -53,8 +53,6 @@ def grafico_barras(data_frame, coluna, titulo):
         cores = cores_generos
     elif coluna == 'status':
         cores = cores_status
-    elif coluna == 'spoken_languages':
-        cores = cores_linguas
 
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
