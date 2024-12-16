@@ -20,24 +20,24 @@ def grafico_barras(data_frame, coluna, titulo):
 
     cores_generos = {
     'Drama': 'blue',
-    'Documentário': 'red',
-    'Comédia': 'green',
-    'Animação': 'yellow',
-    'Terror': 'purple',
-    'Romance': 'blue',
-    'Música': 'red',
-    'Suspense': 'green',
-    'Ação': 'yellow',
-    'Crime': 'purple',
-    'Família': 'blue',
-    'Filme de TV': 'red',
-    'Aventura': 'green',
-    'Fantasia': 'yellow',
-    'Ficção Científica': 'purple',
-    'Mistério': 'blue',
-    'História': 'red',
-    'Guerra': 'green',
-    'Faroeste': 'yellow'
+    'Documentário': 'grey',
+    'Comédia': 'yellow',
+    'Animação': 'grey',
+    'Terror': 'black',
+    'Romance': 'pink',
+    'Música': 'grey',
+    'Suspense': 'grey',
+    'Ação': 'red',
+    'Crime': 'grey',
+    'Família': 'grey',
+    'Filme de TV': 'grey',
+    'Aventura': 'grey',
+    'Fantasia': 'grey',
+    'Ficção Científica': 'grey',
+    'Mistério': 'grey',
+    'História': 'grey',
+    'Guerra': 'grey',
+    'Faroeste': 'grey'
     }
 
     cores_status = {
@@ -45,8 +45,38 @@ def grafico_barras(data_frame, coluna, titulo):
     'Rumor': 'red',
     'Pós-Produção': 'red',
     'Em Produção': 'red',
-    'Planejado': 'red'
+    'Planejado': 'red',
+    'Cancelado': 'red'
     }
+
+    if coluna == 'genres':
+        cores = cores_generos
+    elif coluna == 'status':
+        cores = cores_status
+    elif coluna == 'spoken_languages':
+        cores = cores_linguas
+
+    dados_separados = data_frame[coluna].str.split(', ').explode()
+    aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
+    aparicoes_dados_df = aparicoes_dados.reset_index(name='Quantidade')
+
+    fig = px.bar(
+        data_frame=aparicoes_dados_df,
+        x= coluna,
+        y='Quantidade',
+        title=titulo,
+        color=coluna,  # Usar os valores do eixo X para definir as cores
+        color_discrete_map=cores
+    )
+
+    fig.update_layout(
+        xaxis_title=coluna,
+        yaxis_title="Quantidade",
+        xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
+    )
+    return fig
+
+def diagrama_pareto(data_frame, coluna, titulo):
 
     cores_linguas = {
     'Inglês': 'red',
@@ -57,53 +87,32 @@ def grafico_barras(data_frame, coluna, titulo):
     'Sem Idioma': 'grey',
     'Russo': 'brown',
     'Português': 'green',
-
+    'Outros': 'grey'
     }
 
-    if coluna == 'genres':
-        cores = cores_generos
-    elif coluna == 'status':
-        cores = cores_status
-    elif coluna == 'spoken_languages':
+    cores_paises = {
+    'EUA': 'red',
+    'França': 'blue',
+    'Reino Unido': 'red',
+    'Alemanha': 'black',
+    'Japão': 'white',
+    'Canadá': 'red',
+    'India': 'orange',
+    'Itália': 'green',
+    'Brasil': 'green',
+    'Espanha': 'yellow',
+    'México': 'green',
+    'China': 'red',
+    'Russia': 'blue',
+    'União Soviética': 'red'
+    'Outros: grey'
+    }
+
+    if coluna == 'spoken_languages':
         cores = cores_linguas
+    elif coluna == 'production_countries':
+        cores = cores_paises
 
-
-    dados_separados = data_frame[coluna].str.split(', ').explode()
-    aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
-    aparicoes_dados_df = aparicoes_dados.reset_index(name='Quantidade')
-    if coluna in ['genres', 'spoken_languages', 'status']:
-        fig = px.bar(
-            data_frame=aparicoes_dados_df,
-            x= coluna,
-            y='Quantidade',
-            title=titulo,
-            color=coluna,  # Usar os valores do eixo X para definir as cores
-            color_discrete_map=cores
-        )
-
-        fig.update_layout(
-            xaxis_title=coluna,
-            yaxis_title="Quantidade",
-            xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
-        )
-        return fig
-    else:
-        fig = px.bar(
-            data_frame=aparicoes_dados_df,
-            x= coluna,
-            y='Quantidade',
-            title=titulo,
-        )
-
-        fig.update_layout(
-            xaxis_title=coluna,
-            yaxis_title="Quantidade",
-            xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
-        )
-        return fig
-
-
-def diagrama_pareto(data_frame, coluna, titulo):
     #Contando as aparições de dados
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
@@ -129,6 +138,8 @@ def diagrama_pareto(data_frame, coluna, titulo):
         name='Porcentagem',
         line=dict(color='red', width=2),
         yaxis='y2',
+        color=coluna,  # Usar os valores do eixo X para definir as cores
+        color_discrete_map=cores
     )
     fig.update_layout(
         yaxis2=dict(title="Porcentagem (%)", overlaying='y', side='right', showgrid=False),
