@@ -17,6 +17,30 @@ def df_tail(data_frame):
     return data_frame.tail()
 
 def grafico_barras(data_frame, coluna, titulo):
+
+    cores_generos = {'Drama': 'blue',
+    'Documentário': 'blue',
+    'Comédia':'yellow',
+    'Animação': 'yellow',
+    'Terror': 'black',
+    'Romance': 'red',
+    'Música': 'purple',
+    'Suspense': 'grey',
+    'Ação': 'red',
+    'Crime': 'red',
+    'Família': 'green',
+    'Filme de TV': 'purple',
+    'Aventura': 'yellow',
+    'Fantasia': 'green',
+    'Ficção Científica': 'blue',
+    'Mistério': 'grey',
+    'História': 'purple',
+    'Guerra': 'red',
+    'Faroeste': 'yellow'}
+
+    if coluna == 'genres':
+        cores = cores_generos
+
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
     aparicoes_dados_df = aparicoes_dados.reset_index(name='Quantidade')
@@ -25,7 +49,8 @@ def grafico_barras(data_frame, coluna, titulo):
         x= coluna,
         y='Quantidade',
         title=titulo,
-        
+        color=coluna,  # Usar os valores do eixo X para definir as cores
+        color_discrete_map=cores
     )
 
     fig.update_layout(
