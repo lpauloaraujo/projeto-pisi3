@@ -3,6 +3,8 @@ import plotly.express as px
 import streamlit as st
 
 
+
+
 #criar as funções de carregamentos de dados
 @st.cache_data
 def carregar_dados(dataset):
@@ -60,18 +62,33 @@ def grafico_barras(data_frame, coluna, titulo):
 
     fig = px.bar(
         data_frame=aparicoes_dados_df,
-        x= coluna,
-        y='Quantidade',
+        x= 'Quantidade',
+        y=coluna,
         title=titulo,
-        color=coluna,  # Usar os valores do eixo X para definir as cores
+        color=coluna,  # Usar os valores do eixo y para definir as cores
         color_discrete_map=cores
     )
 
     fig.update_layout(
-        xaxis_title=coluna,
-        yaxis_title="Quantidade",
-        xaxis_tickangle=45  # Define os rótulos na horizontal (ajuste conforme necessário)
+    xaxis=dict(
+        title=None,  # Remove o título do eixo X
+        tickfont=dict(
+            color='black',
+            size=14,
+            family="Arial"
+        )
+    ),
+    yaxis=dict(
+        title=None,  # Remove o título do eixo Y
+        tickfont=dict(
+            color='black',
+            size=14,
+            family="Arial"
+        )
+    ),
     )
+    
+
     return fig
 
 def diagrama_pareto(data_frame, coluna, titulo):
@@ -130,22 +147,38 @@ def diagrama_pareto(data_frame, coluna, titulo):
     #Criando o diagrama em si
     fig = px.bar(
         agrupado_principal,
-        x=coluna,
-        y='Contagem',
+        y=coluna,
+        x='Contagem',
         title=titulo,
         color=coluna,
         color_discrete_map=cores,
         labels={'Contagem': 'Contagem'})
     fig.add_scatter(
-        x=agrupado_principal[coluna],
-        y=agrupado_principal['Acumulado'],
+        y=agrupado_principal[coluna],
+        x=agrupado_principal['Acumulado'],
         mode='lines+markers',
         name='Porcentagem',
-        line=dict(color='red', width=2),
-        yaxis='y2',
+        line=dict(color='#800080', width=2),
+        xaxis='x2',
     )
     fig.update_layout(
-        yaxis2=dict(title="Porcentagem (%)", overlaying='y', side='right', showgrid=False),
-        margin=dict(l=40, r=40, t=40, b=40),
-    )
+    xaxis=dict(
+        title=None,  # Remove o título do eixo X
+        tickfont=dict(
+            color='black',
+            size=14,
+            family="Arial"
+        )
+    ),
+    yaxis=dict(
+        title=None,  # Remove o título do eixo Y
+        tickfont=dict(
+            color='black',
+            size=14,
+            family="Arial"
+        )
+    ),
+    xaxis2=dict(title=None, overlaying='x', side='top', showgrid=False),  # Remove título do segundo eixo
+)
+
     return fig

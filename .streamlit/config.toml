@@ -1,0 +1,7 @@
+[theme]
+primaryColor = "#000000"  # Preto
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#FFFFFF"  # Branco (para fundo secundário)
+textColor = "#000000"  # Preto
+font = "sans serif"  # Fonte padrão
+
