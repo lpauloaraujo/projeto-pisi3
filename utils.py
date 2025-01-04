@@ -22,24 +22,24 @@ def grafico_barras(data_frame, coluna, titulo):
 
     cores_generos = {
     'Drama': 'blue',
-    'Documentário': 'grey',
+    'Documentário': 'blue',
     'Comédia': 'yellow',
-    'Animação': 'grey',
+    'Animação': 'orange',
     'Terror': 'black',
     'Romance': 'pink',
-    'Música': 'grey',
+    'Música': 'black',
     'Suspense': 'grey',
     'Ação': 'red',
-    'Crime': 'grey',
-    'Família': 'grey',
-    'Filme de TV': 'grey',
-    'Aventura': 'grey',
-    'Fantasia': 'grey',
+    'Crime': 'red',
+    'Família': 'orange',
+    'Filme de TV': 'purple',
+    'Aventura': 'green',
+    'Fantasia': 'purple',
     'Ficção Científica': 'grey',
     'Mistério': 'grey',
-    'História': 'grey',
-    'Guerra': 'grey',
-    'Faroeste': 'grey'
+    'História': 'brown',
+    'Guerra': 'red',
+    'Faroeste': 'yellow'
     }
 
     cores_status = {
@@ -82,7 +82,7 @@ def grafico_barras(data_frame, coluna, titulo):
         title=None,  # Remove o título do eixo Y
         tickfont=dict(
             color='black',
-            size=14,
+            size=10,
             family="Arial"
         )
     ),
@@ -90,18 +90,18 @@ def grafico_barras(data_frame, coluna, titulo):
     
 
     return fig
-
 def diagrama_pareto(data_frame, coluna, titulo):
 
     cores_linguas = {
     'Inglês': 'red',
     'Francês': 'blue',
     'Espanhol': 'yellow',
-    'Japonês': 'white',
+    'Japonês': 'blue',
     'Alemão': 'black',
     'Sem Idioma': 'grey',
     'Russo': 'brown',
     'Português': 'green',
+    'Italiano': 'green',
     'Outros': 'grey'
     }
 
@@ -110,7 +110,7 @@ def diagrama_pareto(data_frame, coluna, titulo):
     'França': 'blue',
     'Reino Unido': 'red',
     'Alemanha': 'black',
-    'Japão': 'white',
+    'Japão': 'blue',
     'Canadá': 'red',
     'India': 'orange',
     'Itália': 'green',
@@ -182,3 +182,26 @@ def diagrama_pareto(data_frame, coluna, titulo):
 )
 
     return fig
+
+
+def grafico_caixa(data_frame, coluna, titulo):
+    fig = px.box(data_frame, y=coluna, title=titulo)
+    return fig
+
+def grafico_heatmap(data_frame, colunas, titulo):
+    # Filtra o DataFrame para as colunas desejadas
+    df_filtrado = data_frame[colunas]
+    
+    # Calcula a matriz de correlação (apenas numéricas)
+    matriz_correlacao = df_filtrado.corr()
+    
+    # Cria o heatmap com um colorscale válido
+    fig = px.imshow(
+        matriz_correlacao,
+        text_auto=True,  # Mostra os valores diretamente no gráfico
+        title=titulo,
+        color_continuous_scale="viridis"  # Substitua por outro esquema se desejar
+    )
+    return fig
+
+
