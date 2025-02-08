@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from kmodes.kmodes import KModes
-from kmodes.util.dissim import jaccard_dissim_binary
 
 # Carregar os dados
 dataset_path = "TMDB_movie_dataset_v11_tratado2.parquet"
@@ -12,8 +11,7 @@ st.title("Análise de Clusters de Filmes")
 
 # Função para criar gráfico de Pareto
 def diagrama_pareto(data_frame, coluna, titulo):
-    dados_separados = data_frame[coluna].str.split(', ').explode()
-    aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
+    aparicoes_dados = data_frame[coluna].value_counts().sort_values(ascending=False)
     agrupado = aparicoes_dados.reset_index(name='Contagem')
     agrupado = agrupado.sort_values('Contagem', ascending=False)
     agrupado['Acumulado'] = agrupado['Contagem'].cumsum() / agrupado['Contagem'].sum() * 100
@@ -41,8 +39,7 @@ num_clusters = st.slider("Escolha o número de clusters", min_value=2, max_value
 # One-hot encoding para clustering
 def onehotencoding(df, coluna):
     df[coluna] = df[coluna].fillna('')
-    valores = diagrama_pareto(df, coluna, '')->iloc[:, 0].values
-    one_hot_data = {valor: df[coluna].apply(lambda x: 1 if valor in x else 0) for valor in valores}
+    valores = diagrama_pareto(df, coluna).iloc[:, 0].values
     return pd.DataFrame(one_hot_data, index=df.index)
 
 encoded_paises = onehotencoding(dataset, 'production_countries')
