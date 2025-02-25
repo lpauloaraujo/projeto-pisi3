@@ -3,14 +3,7 @@ from levenshtein import main as corrigir
 from sklearn.svm import SVC
 
 
-def dados_usuario():
-    # Entradas do usuário (aqui, estão hardcoded para fins de exemplo)
-    genero = "Action"  # input("Digite o genero do filme: ")
-    budget = 1000000  # int(input("Digite o orçamento do filme: "))
-    pais_producao = "United States"  # input("Digite o pais de produção do filme: ")
-    lingua = "en"  # input("Digite a lingua original do filme: ")
-    n_linguas = 10
-    runtime = 300
+def dados_usuario(genero,budget,pais_producao,lingua,n_linguas,runtime):
     
     # Corrige entradas com base em dicionários externos
     genero = corrigir(genero, "generos")
@@ -75,7 +68,7 @@ def calcular_media(probabilidades):
     return media_probabilidade
 
 
-def aplicar_ao_svm(treino, teste):
+def aplicar_ao_svm(treino, teste,genero,budget,pais_producao,lingua,n_linguas,runtime):
     dados_teste_encoded = pd.read_parquet(teste)
     dados_treino_encoded = pd.read_parquet(treino)
 
@@ -83,7 +76,7 @@ def aplicar_ao_svm(treino, teste):
     dados_teste_encoded.drop(columns=["lucro"])
 
     # Obtém os dados do usuário
-    genero, budget, pais_producao, lingua, n_linguas, runtime = dados_usuario()
+    genero, budget, pais_producao, lingua, n_linguas, runtime = dados_usuario(genero, budget, pais_producao, lingua, n_linguas, runtime)
 
     # Filtra os dados para que correspondam aos critérios do usuário
     dados_teste_encoded, dados_treino_encoded = filtrar(genero, budget, pais_producao, 
@@ -98,16 +91,14 @@ def aplicar_ao_svm(treino, teste):
     return media_probabilidade
 
 
-def main():
-    arquivo_teste = "dados_teste.parquet"
-    arquivo_treino = "dados_treino.parquet"
+def resultado(genero, budget, pais_producao, lingua, n_linguas, runtime):
+    arquivo_teste = "data/dados_teste.parquet"
+    arquivo_treino = "data/dados_treino.parquet"
 
     # Aplica o modelo SVM para obter as probabilidades de sucesso
-    media_probabilidade = aplicar_ao_svm(arquivo_treino, arquivo_teste)
+    media_probabilidade = aplicar_ao_svm(arquivo_treino, arquivo_teste,genero,budget,pais_producao,lingua,n_linguas,runtime)
     
     # Retorna a média das probabilidades de sucesso
     return media_probabilidade
 
 
-# Chama a função principal e imprime a média das probabilidades
-print(main())

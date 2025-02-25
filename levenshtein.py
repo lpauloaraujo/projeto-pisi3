@@ -19,42 +19,37 @@ def levenshtein(s1: str, s2: str) -> int:
     
     return dp[m][n]
 
-def encontrar_palavra_mais_proxima(palavra_alvo: str, lista_palavras: List[str]) -> Tuple[str, int]:
-    mais_prox = float('inf')  # Inicializa com infinito
-    palavra_proxima = ""
+import difflib
 
-    for palavra in lista_palavras:
-        distancia = levenshtein(palavra_alvo, palavra)
+def encontrar_palavra_mais_proxima(palavra, lista):
+    """Encontra a palavra mais próxima em uma lista usando a distância de Levenshtein."""
+    palavra_proxima = difflib.get_close_matches(palavra, lista, n=1)
+    return (palavra_proxima[0] if palavra_proxima else palavra, 0 if palavra_proxima else -1)
 
-        if distancia < mais_prox:
-            mais_prox = distancia
-            palavra_proxima = palavra
+def main(palavra, lista_selecionada):
+    generos = ['Action', 'Science Fiction', 'Adventure', 'Drama', 'Crime',
+               'Thriller', 'Fantasy', 'Comedy', 'Romance', 'Western', 'Mystery', 'War',
+               'Animation', 'Family', 'Horror', 'Music']
 
-    return palavra_proxima, mais_prox
+    idiomas_permitidos = ['en', 'fr', 'es', 'de', 'ja', 'zh', 'pt', 'it']
+    selected_countries = ['United States', 'France', 'United Kingdom', 'Germany', 
+                          'Canada', 'Japan', 'China', 'India', 'Italy', 'Spain']
 
-# Exemplo de uso:
-generos = ['Action', 'Science Fiction', 'Adventure', 'Drama', 'Crime',
-           'Thriller', 'Fantasy', 'Comedy', 'Romance', 'Western', 'Mystery', 'War',
-           'Animation', 'Family', 'Horror', 'Music']
+    listas = {
+        "generos": generos,
+        "idiomas": idiomas_permitidos,
+        "paises": selected_countries
+    }
 
-idiomas_permitidos = ['en', 'fr', 'es', 'de', 'ja', 'zh', 'pt', 'it']
-selected_countries = ['United States', 'France', 'United Kingdom', 'Germany', 
-                      'Canada', 'Japan', 'China', 'India', 'Italy', 'Spain']
+    # Entrada do usuário:
+   
+    lista_selecionada = listas[lista_selecionada]
 
-listas = {
-    "generos": generos,
-    "idiomas": idiomas_permitidos,
-    "paises": selected_countries
-}
-
-# Entrada do usuário:
-palavra = input("Digite a palavra para comparar: ")
-nome_da_lista = input("Digite o nome da lista (generos, idiomas ou paises): ")
-
-# Verifica se a lista existe e encontra a palavra mais próxima:
-if nome_da_lista in listas:
-    lista_selecionada = listas[nome_da_lista]
+    # Verifica se a lista existe e encontra a palavra mais próxima  
     palavra_proxima, distancia = encontrar_palavra_mais_proxima(palavra, lista_selecionada)
-    print(f"Palavra mais próxima em '{nome_da_lista}': {palavra_proxima} (distância: {distancia})")
-else:
-    print("Lista não encontrada.")
+
+    return palavra_proxima
+        
+
+if __name__ == "__main__":
+    main()
