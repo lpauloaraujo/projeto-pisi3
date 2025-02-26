@@ -102,6 +102,8 @@ if tipo_clusterizacao == "KModes":
 
     st.plotly_chart(fig)
 
+    st.text("Primeiramente, devemos nos atentar ao cluster 5. O cluster 5, formado dominantemente for filmes japoneses, parece ter uma grande lucratividade, porém isso está equivacado, se deve ao fato desse cluster possuir um número grande de registros com valor nulo em 'budget' e 'revenue'. Segundamente, podemos observar o cluster que é realmente o mais lucrativo, o cluster 3, que representa filmes estadunidenses. Por fim, o cluster menos lucrativo é o 4, que possui filmes com valores nulos no atributo gênero.")
+
 else:
     st.text("Dispersão dos Clusters (KMeans)")
     st.image(r"pages\dispersao_kmeans.png")
@@ -129,6 +131,8 @@ else:
     fig.update_traces(hovertemplate='%{y:.1%}')
 
     st.plotly_chart(fig)
+
+    st.text("Essa é a porcentagem de lucratividade dos clusters formados pelo KMeans (para a definição do número de clusters foi utilizado o elbow method). A primeira coisa que chama atenção é a lucratividade fora do normal do cluster 2. Isso se dá pelo algoritmo ter posto outliers nesse cluster, outliers esses que não vemos sentido em remover, visto que pro nosso trabalho analisar o sucesso de outliers também é válido. Quanto a outros cluster, é possível ver que o cluster 0 ficou nos 40% de lucratividade, já o cluster 1 bem abaixo, possuindo, segundo o KMeans, os filmes menos lucrativos.")
 
 # Contando quantos registros pertencem a cada combinação de clusters
 heatmap_data = dataset.groupby(['cluster', 'clusters_n']).size().reset_index(name='Contagem')
@@ -165,6 +169,8 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
+st.text("Esse mapa de calor é uma relação entre os clusters gerados pelo KModes (eixo Y) e os gerados pelo KMeans (eixo X). Podemos observar que a maior parte dos ohtliers (cluster 2 do KMeans) fazem parte também do cluster 3 do KModes (filmes produzidos pelos Estados Unidos da América). Podemos observar que esse país também produziu uma grande quantia dos filmes presentes no cluster 0 do KMeans (cluster que possui a lucratividade mais alta, que é de 40%, com excessão do cluster 2).")
+
 #Porcentagem de lucro nas regiões do heatmap
 contagem_lucro_regioes = dataset.groupby(['cluster', 'clusters_n'], group_keys=False).apply(contar_lucro, include_groups=False).reset_index(name='porcentagem_lucro')
 
@@ -184,6 +190,8 @@ fig = px.bar(
 fig.update_traces(texttemplate='%{text:.1%}', hovertemplate='%{y:.1%}')
 
 st.plotly_chart(fig)
+
+st.text("Aqui temos a lucratividade de cada região do mapa de calor que mostra o relacionamento entre os clusters provenientes do KModes e do KMeans.")
 
 if tipo_clusterizacao == "KModes":
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2", "3", "4", "5"])
