@@ -189,20 +189,52 @@ if tipo_clusterizacao == "KModes":
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2", "3", "4", "5"])
     if cluster_selecionado == "0":
         cluster_data = cluster0kmodes
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("O algoritmo KModes agrupou nesse cluster filmes que possuem 'documentário' em seus gêneros.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("O inglês é a língua mais falada do cluster, mas isso não foge do quadro geral do dataset, logo a língua não foi o fator determinante da formação desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("Os três países com mais filmes nesse cluster são europeus. Em seguida, os países parecem variados. Porém, não foram os países que determinaram esse cluster, e sim os gêneros. Cheque o gráfico de gêneros predominantes nesse cluster para mais detalhes.")
     elif cluster_selecionado == "1":
         cluster_data = cluster1kmodes
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("O algoritmo KModes agrupou nesse cluster filmes que possuem 'Drama' em seus gêneros.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("O inglês é a língua mais falada do cluster, mas isso não foge do quadro geral do dataset, logo a língua não foi o fator determinante da formação desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("Os países são variados nesse cluster, os países não foram o fator determinante aqui, e sim os gêneros. Cheque o gráfico de gêneros predominantes nesse cluster para mais detalhes.")
     elif cluster_selecionado == "2":
         cluster_data = cluster2kmodes
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("O algoritmo KModes agrupou nesse cluster filmes que possuem 'Comédia' em seus gêneros.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("O inglês é a língua mais falada do cluster, mas isso não foge do quadro geral do dataset, logo a língua não foi o fator determinante da formação desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("Os países são variados nesse cluster, os países não foram o fator determinante aqui, e sim os gêneros. Cheque o gráfico de gêneros predominantes nesse cluster para mais detalhes.")
     elif cluster_selecionado == "3":
         cluster_data = cluster3kmodes
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("Os gêneros não possuíram muita influência na formação desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("É possível ver uma dominância do inglês nesse cluster. Contudo, isso não ocorreu por conta do atributo 'língua falada', mas sim por esse cluster ter sido formado levando em conta filmes que possuem o país 'Estados Unidos da América' em sua produção. É possível observar melhor checando o gráfico de países envolvidos na produção desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("É possível observar que o KModes formou esse cluster para filmes que possuem o país 'Estados Unidos da América' em sua produção.")
     elif cluster_selecionado == "4":
         cluster_data = cluster4kmodes
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("O algoritmo KModes agrupou filmes que possuem gênero nulo (não possuem dados disponíveis sobre seus gêneros).")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("O inglês é a língua mais falada do cluster, mas isso não foge do quadro geral do dataset, logo a língua não foi o fator determinante da formação desse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("Os países são variados nesse cluster, os países não foram o fator determinante aqui, e sim os gêneros. Cheque o gráfico de gêneros predominantes nesse cluster para mais detalhes.")
     elif cluster_selecionado == "5":
         cluster_data = cluster5kmodes
-
-    st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
-    st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
-    st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'genres', 5))
+        st.text("Por mais que seja observável uma grande presença de filmes de gênero nulo ou drama, os gêneros não foram a razão da formação desse agrupamento.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'spoken_languages', 8))
+        st.text("É possível ver a predominância da língua japonesa nesse cluster.")
+        st.plotly_chart(grafico_barras(cluster_selecionado, cluster_data, 'production_countries', 8))
+        st.text("É possível observar que o KModes formou esse cluster para filmes japoneses.")
 
 elif tipo_clusterizacao == "KMeans":
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2"])
