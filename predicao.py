@@ -136,15 +136,7 @@ def filtrando(df, countries=None, language=None, min_runtime=None, max_runtime=N
     return df
 
 
-def pegar_inputs():
-
-    countries = 'United States'#input()
-    language = "en" #input()
-    min_runtime = 0 #int(input())
-    max_runtime = 100 #int(input())
-    min_budget = 2000000# int(input())
-    max_budget = 100000000 #int(input())
-    genres = "Music"
+def pegar_inputs(countries, language, min_runtime, max_runtime, min_budget, max_budget, genres):
 
     return countries, language, min_runtime, max_runtime, min_budget, max_budget, genres
 
@@ -225,7 +217,7 @@ def dropar_colunas(dados_treino_encoded, dados_teste_encoded):
 
 
 
-def main():
+def resultado(countries, language, min_runtime, max_runtime, min_budget, max_budget, genres):
 
     # Listas de idiomas e países permitidos
     idiomas_permitidos = ['en', 'fr', 'es', 'de', 'ja', 'zh', "pt", 'it']
@@ -237,21 +229,19 @@ def main():
            'Thriller', 'Fantasy', 'Comedy', 'Romance', 'Western', 'Mystery', 'War',
            'Animation', 'Family', 'Horror', 'Music']
     
-    dados_teste_balanceado, dados_treino_balanceado = processar_dados("dataset_com_clusters.parquet")
+    dados_teste_balanceado, dados_treino_balanceado = processar_dados("data/dataset_com_clusters.parquet")
     dados_teste_encoded, dados_treino_encoded = encoding(dados_teste_balanceado, dados_treino_balanceado,
                                                          idiomas_permitidos, selected_countries,generos)
-    countries, language,min_runtime,max_runtime,min_budget,max_budget,genres = pegar_inputs()
+    countries, language,min_runtime,max_runtime,min_budget,max_budget,genres = pegar_inputs(countries, language, min_runtime, max_runtime, min_budget, max_budget, genres)
 
     dados_treino_encoded, dados_teste_encoded = filtrar_dados(dados_teste_encoded, dados_treino_encoded,countries, 
     language, min_runtime, max_runtime, min_budget, max_budget, genres)
 
     dados_teste_encoded, dados_treino_encoded = dropar_colunas(dados_treino_encoded, dados_teste_encoded)
 
-    print(aplicar_modelo(dados_treino_encoded, dados_teste_encoded))
+    return(aplicar_modelo(dados_treino_encoded, dados_teste_encoded))
 
-if __name__ =="__main__":
 
-    main()
 
 
 
