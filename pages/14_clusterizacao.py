@@ -6,6 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import streamlit as st
+from datetime import datetime
 
 # Função para carregar os dados
 def carregar_dados(filepath):
@@ -64,11 +65,84 @@ lucrou1kmeans = contar_lucro(cluster1kmeans)
 #Porcentagem de lucro nas regiões do heatmap
 contagem_lucro_regioes = dataset.groupby(['cluster_kmodes', 'cluster_kmeans'], group_keys=False).apply(contar_lucro, include_groups=False).reset_index(name='porcentagem_lucro')
 
+#Definindo funções
+#Retorna a década em que o filme foi lançado
+def get_decada(idade):
+    ano_atual = datetime.now().year
+    ano_do_filme = ano_atual - idade
+    decada = (ano_do_filme // 10) * 10
+    return f"{decada}s"
+
+#Retorna um dicionário com décadas sendo suas chaves e a lucratividade total que um cluster obteve naquela década como seus valores
+def coletar_lucro_medio_decada(dataset, filmes_decada, cluster):
+    lucro_total = {decada: 0 for decada in filmes_decada}
+    contagem_filmes = {decada: 0 for decada in filmes_decada}
+    for _, row in dataset.iterrows():
+        decada_filme = get_decada(row['idade'])
+        lucro = row['lucro']
+        if decada_filme in filmes_decada:
+            lucro_total[decada_filme] += lucro
+            contagem_filmes[decada_filme] += 1
+    for decada in filmes_decada:
+        if contagem_filmes[decada] > 0:
+            filmes_decada[decada][cluster] = lucro_total[decada] / contagem_filmes[decada]
+        else:
+            filmes_decada[decada][cluster] = 0 
+    
+    return filmes_decada
+
+#Plota um gráfico de barras que mostra o lucro médio de um cluster através das décadas
+def plotar_lucro_decada(filmes_decada, cluster):
+    df = pd.DataFrame([(decada, valores[str(cluster)]) for decada, valores in filmes_decada.items()],
+                      columns=['Década', 'Lucro Médio'])
+    df = df.sort_values(by='Década')
+    fig = px.bar(df, x='Década', y='Lucro Médio', 
+                 title=f'Lucro Médio do Cluster {cluster} por Década',
+                 labels={'Lucro Médio': f'Lucro Médio do Cluster {cluster}', 'Década': 'Década'},
+                 text_auto=True)
+    fig.update_traces(marker=dict(color=cores_cinema)) 
+    return fig
+
+#Plota um gráfico com a maior lucratividade média por década, informando de qual cluster veio essa lucratividade
+def plotar_maior_lucro_decada(filmes_decada):
+    cluster_nomes = {
+        '0': '0',
+        '1': '1',
+        '2': '2',
+        '3': '3'
+    }
+    dados = []
+    for decada, clusters in filmes_decada.items():
+        max_cluster = max(clusters, key=clusters.get)  
+        max_lucro = clusters[max_cluster]  
+        dados.append((decada, max_lucro, cluster_nomes[max_cluster]))
+    
+    df = pd.DataFrame(dados, columns=['Década', 'Lucro Máximo', 'Cluster'])
+    df = df.sort_values(by='Década')
+
+    # Criando uma nova coluna para exibir no eixo X com quebra de linha
+    df["Década_Cluster"] = df["Década"].astype(str) + "<br>" + df["Cluster"]
+
+    fig = px.bar(df, x='Década_Cluster', y='Lucro Máximo', text_auto=True,
+                 title='Maior Lucratividade por Década e Cluster',
+                 labels={'Lucro Máximo': 'Maior Lucro na Década', 'Década_Cluster': 'Década e Cluster'},
+                 hover_data=['Cluster'])
+
+    fig.update_traces(marker=dict(color=cores_cinema)) 
+
+    # Evita inclinação dos rótulos
+    fig.update_layout(xaxis_tickangle=0)
+
+    return fig
+
+#Criando o dicionário que guardará a lucratividade por cluster em cada época
+filmes_decada = {'1910s': {'0': 0, '1': 0, '2': 0, '3': 0},'1920s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1930s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1940s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1950s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1960s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1970s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1980s': {'0': 0, '1': 0, '2': 0, '3': 0}, '1990s': {'0': 0, '1': 0, '2': 0, '3': 0}, '2000s': {'0': 0, '1': 0, '2': 0, '3': 0}, '2010s': {'0': 0, '1': 0, '2': 0, '3': 0}, '2020s': {'0': 0, '1': 0, '2': 0, '3': 0}}
+
 # Título da aplicação
-st.title("Visualização da Clusterização")
+st.title("Visualização da Clusterização 👀")
 
 # Selecionar o tipo de clusterização
-tipo_clusterizacao = st.selectbox("Selecione o Tipo de Clusterização", ["KModes", "KMeans"])
+tipo_clusterizacao = st.selectbox("Selecione o Tipo de Clusterização ✅", ["KModes", "KMeans"])
 
 if tipo_clusterizacao == "KModes":
 
@@ -180,6 +254,16 @@ st.plotly_chart(fig)
 
 st.text("Podemos observar que as regiões que fazem parte do cluster 1 numérico possuem, em média, lucratividades extremamente altas (acima de 90%), devido ao algoritmo ter selecionado filmes que foram muito lucrativos para esse cluster. As outras regiões, embora não tão altas, também possuem boas porcentagens de lucro. Isso é devido ao fato de estarmos trabalhando apenas com filmes que possuíram um grande orçamento.")
 
+filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
+filmes_decada1 = coletar_lucro_medio_decada(cluster1kmodes, filmes_decada, '1')
+filmes_decada2 = coletar_lucro_medio_decada(cluster2kmodes, filmes_decada, '2')
+filmes_decada3 = coletar_lucro_medio_decada(cluster3kmodes, filmes_decada, '3')
+
+# Cluster mais lucrativo 
+fig = plotar_maior_lucro_decada(filmes_decada)
+st.plotly_chart(fig)
+st.text("Texto")
+
 if tipo_clusterizacao == "KModes":
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2", "3"])
     if cluster_selecionado == "0":
@@ -195,6 +279,11 @@ if tipo_clusterizacao == "KModes":
         fig = grafico_barras('0', cluster0kmodes, 'production_countries', 8)
         st.plotly_chart(fig)
         st.text("A maioria dos filmes presentes no cluster possuem o país Estados Unidos da América em suas produções.")
+        # Sucesso do cluster 0 (cluster que possui filmes de comédia ou subgêneros relacionados) através das décadas
+        filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
+        fig = plotar_lucro_decada(filmes_decada0, '0')
+        st.plotly_chart(fig)
+        st.text("Texto")
     elif cluster_selecionado == "1":
         #Gêneros mais presentes no cluster 1
         fig = grafico_barras('1', cluster1kmodes, 'genres', 5)
@@ -208,6 +297,11 @@ if tipo_clusterizacao == "KModes":
         fig = grafico_barras('1', cluster1kmodes, 'production_countries', 8)
         st.plotly_chart(fig)
         st.text("A maioria dos filmes presentes no cluster possuem o país Estados Unidos da América em suas produções.")
+        # Sucesso do cluster 1 (cluster que possui filmes de ação e subgêneros relacionados) através das décadas
+        filmes_decada1 = coletar_lucro_medio_decada(cluster1kmodes, filmes_decada, '1')
+        fig = plotar_lucro_decada(filmes_decada1, '1')
+        st.plotly_chart(fig)
+        st.text("Texto")
     elif cluster_selecionado == "2":
         #Gêneros mais presentes no cluster 2
         fig = grafico_barras('2', cluster2kmodes, 'genres', 5)
@@ -221,6 +315,11 @@ if tipo_clusterizacao == "KModes":
         fig = grafico_barras('2', cluster2kmodes, 'production_countries', 8)
         st.plotly_chart(fig)
         st.text("A maioria dos filmes presentes no cluster possuem o país Estados Unidos da América em suas produções.")
+        # Sucesso do cluster 2 (cluster que possui filmes de terror, suspense e subgêneros relacionados) através das décadas
+        filmes_decada2 = coletar_lucro_medio_decada(cluster2kmodes, filmes_decada, '2')
+        fig = plotar_lucro_decada(filmes_decada2, '2')
+        st.plotly_chart(fig)
+        st.text("Texto")
     else:
         #Gêneros mais presentes no cluster 3
         fig = grafico_barras('3', cluster3kmodes, 'genres', 5)
@@ -234,6 +333,11 @@ if tipo_clusterizacao == "KModes":
         fig = grafico_barras('3', cluster3kmodes, 'production_countries', 8)
         st.plotly_chart(fig)
         st.text("A maioria dos filmes presentes no cluster possuem o país Estados Unidos da América em suas produções.")
+        # Sucesso do cluster 3 (cluster que possui filmes de drama e subgêneros relacionados) através das décadas
+        filmes_decada3 = coletar_lucro_medio_decada(cluster3kmodes, filmes_decada, '3')
+        fig = plotar_lucro_decada(filmes_decada3, '3')
+        st.plotly_chart(fig)
+        st.text("Texto")
 
 else:
     tipo_clusterizacao = "KMeans"
