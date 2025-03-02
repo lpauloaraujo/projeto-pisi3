@@ -144,7 +144,7 @@ st.title("Visualização da Clusterização 👀")
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Escolha dos Clusters", "Clusters KModes", "Clusters KMeans", "Lucro KModes", "Lucro KMeans", "Heatmap e Lucro"])
 
 with tab1:
-    st.header("🎯Escolha dos Clusters")
+    st.header("🎯 Escolha dos Clusters")
     st.write("A clusterização é uma técnica de aprendizado não supervisionado que tem como objetivo dividir um conjunto de dados em grupos de acordo com suas características. Neste projeto, utilizamos dois algoritmos de clusterização: KModes e KMeans. O KModes é um algoritmo que agrupa dados categóricos, enquanto o KMeans agrupa dados numéricos.")
     
     st.subheader("Elbow Method (KMeans)")
@@ -160,7 +160,7 @@ with tab1:
     st.text("O Elbow Method é um método utilizado para encontrar o número ideal de clusters em um conjunto de dados. O método consiste em plotar o valor da função objetivo (no caso, a soma dos quadrados das distâncias dos pontos ao centróide) em função do número de clusters. O ponto de inflexão do gráfico é o número ideal de clusters. No caso, 2.")
 
 with tab2:
-    st.header("🔍Entendendo os Clusters KModes")
+    st.header("🔍 Entendendo os Clusters KModes")
     st.write("O algoritmo KModes é um algoritmo de clusterização que agrupa dados categóricos. Neste projeto, utilizamos o KModes para agrupar os filmes de acordo com seus gêneros, línguas faladas e países de produção. Abaixo, você pode visualizar os clusters gerados pelo KModes e as características de cada um deles.")
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2", "3"])
     if cluster_selecionado == "0":
@@ -229,7 +229,7 @@ with tab2:
         st.text("A maioria dos filmes presentes no cluster possuem o país Estados Unidos da América em suas produções.")
 
 with tab3:
-    st.header("🔍Entendendo os Clusters KMeans")
+    st.header("🔍 Entendendo os Clusters KMeans")
     st.text("TEXTO")
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1"])
     if cluster_selecionado == "0":
@@ -266,7 +266,7 @@ with tab3:
         st.text("A maioria dos filmes do cluster possuem os Estados Unidos da América em sua produção.")
 
 with tab4:
-    st.header("💸Lucro KModes")
+    st.header("💸 Lucro KModes")
     st.text("Aqui, você pode visualizar a porcentagem de filmes que lucraram em cada cluster gerado pelo KModes.")
     st.text("Além disso, é possível ver o lucro médio dos clusters por década.")
     #Porcentagem de filmes que lucraram por cluster
@@ -331,7 +331,7 @@ with tab4:
 
 
 with tab5:
-    st.header("💸Lucro KMeans")
+    st.header("💸 Lucro KMeans")
     st.text("Aqui, você pode visualizar a porcentagem de filmes que lucraram em cada cluster gerado pelo KMeans.")
     #Porcentagem de filmes que lucraram por cluster
 
@@ -361,7 +361,7 @@ with tab5:
 
 
 with tab6:
-    st.header("🔥Heatmap e Lucro")
+    st.header("🔥 Heatmap e Lucro")
     st.text("Aqui, você pode visualizar a relação entre os clusters categóricos e numéricos, além da porcentagem de lucro por região no heatmap.")
     # Contando quantos registros pertencem a cada combinação de clusters
     heatmap_data = dataset.groupby(['cluster_kmodes', 'cluster_kmeans']).size().reset_index(name='Contagem')
