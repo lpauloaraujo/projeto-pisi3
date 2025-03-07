@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 from utils import carregar_dados, grafico_barras, diagrama_pareto
 
-df = carregar_dados("data/TMDB_movie_dataset_v11.parquet")
+# Carregar os dados
+df = carregar_dados("df_com_clusters_atualizados.parquet")
 
 # Dicionário para traduzir os gêneros
 traducao_generos = {
@@ -25,15 +26,6 @@ traducao_generos = {
     'History': 'História',
     'War': 'Guerra',
     'Western': 'Faroeste'
-}
-
-traducao_status = {
-    'Released': 'Lançado',
-    'Rumored': 'Rumor',
-    'Post Production': 'Pós-Produção',
-    'In Production': 'Em Produção',
-    'Planned': 'Planejado',
-    'Canceled': 'Cancelado'
 }
 
 traducao_production_countries = {
@@ -62,6 +54,7 @@ traducao_spoken_language = {
     'No Language': 'Sem Idioma',
     'Russian': 'Russo',
     'Portuguese': 'Português',
+
 }
 
 # Função para traduzir os gêneros corretamente
@@ -86,10 +79,9 @@ def traduzir_production_countries(genre_str, traducao):
     generos_traduzidos = [traducao.get(g, g) for g in generos]  # Traduz os gêneros
     return ', '.join(generos_traduzidos)
 
-
 df['genres'] = df['genres'].apply(traduzir_generos, args=(traducao_generos,))
 
-df['status'] = df['status'].replace(traducao_status)
+# df['status'] = df['status'].replace(traducao_status)
 
 df['spoken_languages'] = df['spoken_languages'].apply(traduzir_spoken_languages, args=(traducao_spoken_language,))
 
@@ -98,18 +90,18 @@ df['production_countries'] = df['production_countries'].apply(traduzir_productio
 # Título da aplicação
 st.title("Gráficos")
 
-# Gráfico de barras - Estado de lançamento das produções
-st.plotly_chart(grafico_barras(df, 'status', 'Estado de Lançamento das Produções'))
-st.write("O gráfico apresenta visualmente o estado em que os filmes registrados no dataset se encontram. O resultado demonstra que a imensa maioria dos registros se encontram na categoria de já lançados, o que possibilita o estudo visto que são precisos dados sobre os resultados obtidos pelos filmes.")
-
 # Gráfico de barras - Aparições de Gêneros
 st.plotly_chart(grafico_barras(df, 'genres', 'Aparições de Gêneros'))
-st.write("O gráfico permite observar a quantidade de vezes que cada gênero aparece no dataset para que seja possível entender melhor a distribuição desses dados.")
+st.write("Após o tratamento não há mudanças significantes na ordem das colunas, a grande diferença é a diminuição do número de filmes como podemos observar no eixo 'Quantidade'")
+
+# Gráfico de barras - Estado de lançamento das produções
+# st.plotly_chart(grafico_barras(df, 'status', 'Estado de Lançamento das Produções'))
+# st.write("Depois do tratamento é possível observar que não houveram mudanças significativas. Isto indica que o dataset segue útil para o estudo, visto que precisamos de dados sobre os resultados que os filmes obtiveram após seus lançamentos, dados esses que só os filmes que compõem a coluna 'Lançado' proporcionam.")
 
 # Diagrama de Pareto - Envolvimento de países
 st.plotly_chart(diagrama_pareto(df, 'production_countries', 'Envolvimento de Países nas Produções'))
-st.write("O gráfico demonstra, através de um diagrama de Pareto, que o dataset utilizado possui um grande número de filmes com o envolvimento do país EUA (Estados Unidos da América) em suas produções, com uma grande diferença de quantidade em relação aos outros países. Em seguida, temos França, Reino Unido, Alemanha e Japão com números parecidos, seguidos pelos outros países. A coluna “Outros” ter um tamanho elevado indica que o dataset é bastante variado em países envolvidos nas produções, visto que ela é formada por uma grande quantidade de países que possuem, relativamente, poucas produções.")
+st.write("""Após o tratamento, podemos observar que:\n - A quantidade de filmes com envolvimento do país 'Alemanha' ultrapassou as quantidades dos com envolvimento do país 'França' e 'Reino Unido'\n - A quantidade de filmes com o envolvimento do país 'Índia' ultrapassou a com o envolvimento do país 'Canadá'\n - As quantidades de filmes com o envolvimento do país 'Espanha' e do país 'México' ultrapassou o envolvimento do país 'Brasil'\n - Os países 'China' e 'Rússia' não aparecem mais no gráfico e o país 'União Soviética' apareceu.  """)
 
 # Diagrama de Pareto - Distribuição de línguas faladas
 st.plotly_chart(diagrama_pareto(df, 'spoken_languages', 'Distribuição de Línguas Faladas'))
-st.write("A Figura 4 explica a quantidade de filmes onde determinada língua é falada, através de um diagrama de Pareto. É possível observar a predominância do inglês.")
+st.write("Podemos observar que após o tratamento temos mais filmes onde a língua alemã é falada do que filmes onde a língua japonesa é falada. Também podemos perceber que os idiomas russo e português não aparecem mais e que o italiano apareceu.")

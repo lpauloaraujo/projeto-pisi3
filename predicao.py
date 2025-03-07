@@ -229,7 +229,7 @@ def resultado(countries, language, min_runtime, max_runtime, min_budget, max_bud
            'Thriller', 'Fantasy', 'Comedy', 'Romance', 'Western', 'Mystery', 'War',
            'Animation', 'Family', 'Horror', 'Music']
     
-    dados_teste_balanceado, dados_treino_balanceado = processar_dados("data/dataset_com_clusters.parquet")
+    dados_teste_balanceado, dados_treino_balanceado = processar_dados("df_com_clusters_atualizados.parquet")
     dados_teste_encoded, dados_treino_encoded = encoding(dados_teste_balanceado, dados_treino_balanceado,
                                                          idiomas_permitidos, selected_countries,generos)
     countries, language,min_runtime,max_runtime,min_budget,max_budget,genres = pegar_inputs(countries, language, min_runtime, max_runtime, min_budget, max_budget, genres)
