@@ -13,7 +13,7 @@ def carregar_dados(filepath):
     return pd.read_parquet(filepath)
 
 #Carregando dados
-dataset = pd.read_parquet("df_com_clusters_atualizados.parquet")
+dataset = pd.read_parquet("data/df_com_clusters_atualizados.parquet")
 
 #Explorando os clusters provenientes do KModes (clusterização dos dados categóricos)
 cores_cinema = ["#1B1B1B", "#D90429", "#FFD700", "#FFAA33", "#A2A2A2", 

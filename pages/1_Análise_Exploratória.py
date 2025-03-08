@@ -3,7 +3,7 @@ import pandas as pd
 from utils import carregar_dados, grafico_barras, diagrama_pareto
 
 # Carregar os dados
-df = carregar_dados("df_com_clusters_atualizados.parquet")
+df = carregar_dados("data/df_com_clusters_atualizados.parquet")
 
 # Dicionário para traduzir os gêneros
 traducao_generos = {
@@ -92,7 +92,7 @@ st.title("Gráficos")
 
 # Gráfico de barras - Aparições de Gêneros
 st.plotly_chart(grafico_barras(df, 'genres', 'Aparições de Gêneros'))
-st.write("Após o tratamento não há mudanças significantes na ordem das colunas, a grande diferença é a diminuição do número de filmes como podemos observar no eixo 'Quantidade'")
+st.write("Podemos observar que o gênero drama é o mais presente nos registros do dataseet, aparecêndo em quase metade, seguido dos gêneros comédia, ação, romance e suspense, sendo esses os 5 gêneros que mais aparecem no dataset. O dataset possui poucos filmes com gênero 'nulo', ou seja, com esse dado faltante.")
 
 # Gráfico de barras - Estado de lançamento das produções
 # st.plotly_chart(grafico_barras(df, 'status', 'Estado de Lançamento das Produções'))
@@ -100,8 +100,8 @@ st.write("Após o tratamento não há mudanças significantes na ordem das colun
 
 # Diagrama de Pareto - Envolvimento de países
 st.plotly_chart(diagrama_pareto(df, 'production_countries', 'Envolvimento de Países nas Produções'))
-st.write("""Após o tratamento, podemos observar que:\n - A quantidade de filmes com envolvimento do país 'Alemanha' ultrapassou as quantidades dos com envolvimento do país 'França' e 'Reino Unido'\n - A quantidade de filmes com o envolvimento do país 'Índia' ultrapassou a com o envolvimento do país 'Canadá'\n - As quantidades de filmes com o envolvimento do país 'Espanha' e do país 'México' ultrapassou o envolvimento do país 'Brasil'\n - Os países 'China' e 'Rússia' não aparecem mais no gráfico e o país 'União Soviética' apareceu.  """)
+st.write("""O país 'Estados Unidos da América' está envolvido na produção da maioria dos filmes presentes no dataset. Em seguida temos: Reino Unido, França, Índia e Alemanha""")
 
 # Diagrama de Pareto - Distribuição de línguas faladas
 st.plotly_chart(diagrama_pareto(df, 'spoken_languages', 'Distribuição de Línguas Faladas'))
-st.write("Podemos observar que após o tratamento temos mais filmes onde a língua alemã é falada do que filmes onde a língua japonesa é falada. Também podemos perceber que os idiomas russo e português não aparecem mais e que o italiano apareceu.")
+st.write("A grande maioria dos filmes no dataset possuem o inglês sendo falado em algum momento do filme. As outras línguas possuem uma distribuição semelhante, não exercendo grande influência.")

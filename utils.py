@@ -138,8 +138,8 @@ def diagrama_pareto(data_frame, coluna, titulo):
     agrupado['Acumulado'] = agrupado['Contagem'].cumsum() / agrupado['Contagem'].sum() * 100
 
     #Criando a barra 'outros' após a linha atingir os 70%
-    agrupado_principal = agrupado[agrupado['Acumulado'] <= 80]
-    agrupado_outros = agrupado[agrupado['Acumulado'] > 80]
+    agrupado_principal = agrupado[agrupado['Acumulado'] <= 90]
+    agrupado_outros = agrupado[agrupado['Acumulado'] > 90]
     outros_contagem = agrupado_outros['Contagem'].sum()
     linha_outros = pd.DataFrame({coluna: ['Outros'], 'Contagem': [outros_contagem], 'Acumulado': [100]})
     agrupado_principal = pd.concat([agrupado_principal, linha_outros], ignore_index=True)
