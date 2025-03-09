@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 import streamlit as st
 from datetime import datetime
 
@@ -145,7 +144,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Escolha dos Clusters", "Clusters 
 
 with tab1:
     st.header("🎯 Escolha dos Clusters")
-    st.write("A clusterização é uma técnica de aprendizado não supervisionado que tem como objetivo dividir um conjunto de dados em grupos de acordo com suas características. Neste projeto, utilizamos dois algoritmos de clusterização: KModes e KMeans. O KModes é um algoritmo que agrupa dados categóricos, enquanto o KMeans agrupa dados numéricos.")
+    st.write("A clusterização é uma técnica de aprendizado não supervisionado que tem como objetivo dividir um conjunto de dados em grupos de acordo com suas características. Neste projeto, utilizamos dois algoritmos de clusterização: KModes e KMeans. O KModes é um algoritmo que agrupa por dados categóricos, enquanto o KMeans agrupa por dados numéricos.")
     
     st.subheader("Elbow Method (KMeans)")
     st.image("imagens\Elbow Method KModes.png")
@@ -161,7 +160,7 @@ with tab1:
 
 with tab2:
     st.header("🔍 Entendendo os Clusters KModes")
-    st.write("O algoritmo KModes é um algoritmo de clusterização que agrupa dados categóricos. Neste projeto, utilizamos o KModes para agrupar os filmes de acordo com seus gêneros, línguas faladas e países de produção. Abaixo, você pode visualizar os clusters gerados pelo KModes e as características de cada um deles.")
+    st.write("O algoritmo KModes é um algoritmo de clusterização que agrupa baseando-se em dados categóricos. Neste projeto, utilizamos o KModes para agrupar os filmes de acordo com seus gêneros, línguas faladas e países de produção. Abaixo, você pode visualizar os clusters gerados pelo KModes e as características de cada um deles.")
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1", "2", "3"])
     if cluster_selecionado == "0":
         #Gêneros mais presentes no cluster 0
@@ -230,7 +229,7 @@ with tab2:
 
 with tab3:
     st.header("🔍 Entendendo os Clusters KMeans")
-    st.text("O algoritmo KMeans é um algoritmo de clusterização que agrupa dados numéricos.")
+    st.text("O algoritmo KMeans é um algoritmo de clusterização que agrupa baseando-se em dados numéricos. Neste projeto, utilizamos o KMeans para agrupar os filmes de acordo com seus valores nas colunas numéricas 'Receita', 'Orçamento' e 'Duração' do dataset. Abaixo, você pode visualizar os clusters gerados pelo KMeans e as características de cada um deles.")
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1"])
     if cluster_selecionado == "0":
         #Gêneros mais presentes no cluster 0
@@ -292,27 +291,31 @@ with tab4:
 
     st.plotly_chart(fig)
 
-    st.text("Podemos observar que essa é a sequência do cluster mais sucrativo pro menos: cluster 1 (ação e subgêneros), cluster 0 (comédia e subgêneros), cluster 2 (terror/suspende e subgêneros), cluster 3 (drama e subgêneros).")
+    st.text("Podemos observar que essa é a sequência do cluster mais lucrativo pro menos: cluster 1 (ação e subgêneros), cluster 0 (comédia e subgêneros), cluster 2 (terror/suspende e subgêneros), cluster 3 (drama e subgêneros).")
 
     # Sucesso do cluster 0 (cluster que possui filmes de comédia ou subgêneros relacionados) através das décadas
     filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
     fig = plotar_lucro_decada(filmes_decada0, '0')
     st.plotly_chart(fig)
+    st.text("A década em que o cluster 0 (comédia e subgêneros) foi mais lucrativo foi na década de 2010.")
 
     # Sucesso do cluster 1 (cluster que possui filmes de ação e subgêneros relacionados) através das décadas
     filmes_decada1 = coletar_lucro_medio_decada(cluster1kmodes, filmes_decada, '1')
     fig = plotar_lucro_decada(filmes_decada1, '1')
     st.plotly_chart(fig)
+    st.text("A década em que o cluster 1 (ação e subgêneros) foi mais lucrativo foi na década de 2010.")
 
     # Sucesso do cluster 2 (cluster que possui filmes de terror, suspense e subgêneros relacionados) através das décadas
     filmes_decada2 = coletar_lucro_medio_decada(cluster2kmodes, filmes_decada, '2')
     fig = plotar_lucro_decada(filmes_decada2, '2')
     st.plotly_chart(fig)
+    st.text("A década em que o cluster 2 (terror, suspense e subgêneros) foi mais lucrativo foi na década de 1970.")
 
     # Sucesso do cluster 3 (cluster que possui filmes de drama e subgêneros relacionados) através das décadas
     filmes_decada3 = coletar_lucro_medio_decada(cluster3kmodes, filmes_decada, '3')
     fig = plotar_lucro_decada(filmes_decada3, '3')
     st.plotly_chart(fig)
+    st.text("A década em que o cluster 3 (drama e subgêneros) foi mais lucrativo foi na década de 1990.")
 
     
     filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
@@ -323,6 +326,7 @@ with tab4:
     # Cluster mais lucrativo 
     fig = plotar_maior_lucro_decada(filmes_decada)
     st.plotly_chart(fig)
+    st.text("Neste gráfico, podemos observar qual foi a maior lucratividade em cada década. Cada coluna representa o lucro médio do cluster que mais lucrou, e embaixo da década é possível ver o número do cluster em questão.")
 
 
 with tab5:
