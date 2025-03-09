@@ -230,7 +230,7 @@ with tab2:
 
 with tab3:
     st.header("🔍 Entendendo os Clusters KMeans")
-    st.text("TEXTO")
+    st.text("O algoritmo KMeans é um algoritmo de clusterização que agrupa dados numéricos.")
     cluster_selecionado = st.selectbox("Selecione o Cluster", ["0", "1"])
     if cluster_selecionado == "0":
         #Gêneros mais presentes no cluster 0
@@ -298,25 +298,21 @@ with tab4:
     filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
     fig = plotar_lucro_decada(filmes_decada0, '0')
     st.plotly_chart(fig)
-    st.text("Texto")
 
     # Sucesso do cluster 1 (cluster que possui filmes de ação e subgêneros relacionados) através das décadas
     filmes_decada1 = coletar_lucro_medio_decada(cluster1kmodes, filmes_decada, '1')
     fig = plotar_lucro_decada(filmes_decada1, '1')
     st.plotly_chart(fig)
-    st.text("Texto")
 
     # Sucesso do cluster 2 (cluster que possui filmes de terror, suspense e subgêneros relacionados) através das décadas
     filmes_decada2 = coletar_lucro_medio_decada(cluster2kmodes, filmes_decada, '2')
     fig = plotar_lucro_decada(filmes_decada2, '2')
     st.plotly_chart(fig)
-    st.text("Texto")
 
     # Sucesso do cluster 3 (cluster que possui filmes de drama e subgêneros relacionados) através das décadas
     filmes_decada3 = coletar_lucro_medio_decada(cluster3kmodes, filmes_decada, '3')
     fig = plotar_lucro_decada(filmes_decada3, '3')
     st.plotly_chart(fig)
-    st.text("Texto")
 
     
     filmes_decada0 = coletar_lucro_medio_decada(cluster0kmodes, filmes_decada, '0')
@@ -327,7 +323,6 @@ with tab4:
     # Cluster mais lucrativo 
     fig = plotar_maior_lucro_decada(filmes_decada)
     st.plotly_chart(fig)
-    st.text("Texto")
 
 
 with tab5:

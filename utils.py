@@ -21,40 +21,29 @@ def df_tail(data_frame):
 def grafico_barras(data_frame, coluna, titulo):
 
     cores_generos = {
-    'Drama': 'blue',
-    'Documentário': 'blue',
-    'Comédia': 'yellow',
-    'Animação': 'orange',
-    'Terror': 'black',
-    'Romance': 'pink',
-    'Música': 'black',
-    'Suspense': 'grey',
-    'Ação': 'red',
-    'Crime': 'red',
-    'Família': 'orange',
-    'Filme de TV': 'purple',
-    'Aventura': 'green',
-    'Fantasia': 'purple',
-    'Ficção Científica': 'grey',
-    'Mistério': 'grey',
-    'História': 'brown',
-    'Guerra': 'red',
-    'Faroeste': 'yellow'
-    }
-
-    cores_status = {
-    'Lançado': 'green',
-    'Rumor': 'red',
-    'Pós-Produção': 'red',
-    'Em Produção': 'red',
-    'Planejado': 'red',
-    'Cancelado': 'red'
+    'Drama': '#1B1B1B',
+    'Comédia': '#D90429',
+    'Ação': '#FFD700',
+    'Suspense': '#FFAA33',
+    'Romance': '#A2A2A2',
+    'Aventura': '#001F3F',
+    'Crime': '#8B4513',
+    'Terror': '#F5C518',
+    'Família': '#5A5A5A',
+    'Ficção Científica': '#B22222',
+    'Fantasia': '#004D73',
+    'Mistério': '#33FFAA',
+    'Animação': '#6A0DAD',
+    'História': '#808000',
+    'Guerra': '#FF69B4',
+    'Música': '#556B2F',
+    'Documentário': '#FFA07A',
+    'Faroeste': '#4682B4',
+    'Filme de TV': '#FFDAB9',
     }
 
     if coluna == 'genres':
         cores = cores_generos
-    elif coluna == 'status':
-        cores = cores_status
 
     dados_separados = data_frame[coluna].str.split(', ').explode()
     aparicoes_dados = dados_separados.value_counts().sort_values(ascending=False)
@@ -93,34 +82,40 @@ def grafico_barras(data_frame, coluna, titulo):
 def diagrama_pareto(data_frame, coluna, titulo):
 
     cores_linguas = {
-    'Inglês': 'red',
-    'Francês': 'blue',
-    'Espanhol': 'yellow',
-    'Japonês': 'blue',
-    'Alemão': 'black',
-    'Sem Idioma': 'grey',
-    'Russo': 'brown',
-    'Português': 'green',
-    'Italiano': 'green',
-    'Outros': 'grey'
+    'Inglês': '#1B1B1B',
+    'Francês': '#D90429',
+    'Espanhol': '#FFD700',
+    'Russo': '#FFAA33',
+    'Alemão': '#A2A2A2',
+    'Italiano': '#001F3F',
+    'Hindi': '#8B4513',
+    'Mandarin': '#F5C518',
+    'Japonês': '#5A5A5A',
+    'Arabic': '#B22222',
+    'Português': '#004D73',
+    'Korean': '#33FFAA',
+    'Cantonese': '#6A0DAD',
+    'Latin': '#808000',
+    'Outros': '#FF69B4'
     }
 
     cores_paises = {
-    'EUA': 'red',
-    'França': 'blue',
-    'Reino Unido': 'red',
-    'Alemanha': 'black',
-    'Japão': 'blue',
-    'Canadá': 'red',
-    'India': 'orange',
-    'Itália': 'green',
-    'Brasil': 'green',
-    'Espanha': 'yellow',
-    'México': 'green',
-    'China': 'red',
-    'Russia': 'blue',
-    'União Soviética': 'red',
-    'Outros': 'grey'
+    'EUA': '#1B1B1B',
+    'Reino Unido': '#D90429',
+    'França': '#FFD700',
+    'India': '#FFAA33',
+    'Alemanha': '#A2A2A2',
+    'Canadá': '#001F3F',
+    'Espanha': '#8B4513',
+    'Japão': '#F5C518',
+    'China': '#5A5A5A',
+    'Itália': '#B22222',
+    'Russia': '#004D73',
+    'Australia': '#33FFAA',
+    'Belgium': '#6A0DAD',
+    'Hong Kong': '#808000',
+    'South Korea': '#FF69B4',
+    'Outros': '#556B2F'
     }
 
     if coluna == 'spoken_languages':
@@ -176,7 +171,8 @@ def diagrama_pareto(data_frame, coluna, titulo):
             color='black',
             size=14,
             family="Arial"
-        )
+        ),
+        tickmode='linear'  # Ensure all ticks are shown
     ),
     xaxis2=dict(title=None, overlaying='x', side='top', showgrid=False),  # Remove título do segundo eixo
 )

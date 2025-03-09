@@ -7,10 +7,10 @@ import plotly.express as px
 st.title("🎞️ Filtros de Filme")
 
 # 2. Países de Produção
-pais_principal_de_producao = st.text_input("País principal de Produção 🌍", placeholder="Ex: EUA")
+pais_principal_de_producao = st.text_input("País principal de Produção 🌍", placeholder="Ex: United States")
 
 # 3. Línguas Originais
-languages = st.text_input("Língua Original 🗣️", placeholder="Ex: Inglês")
+languages = st.text_input("Língua Original 🗣️", placeholder="Ex: en")
 
 # 5. Faixa de Runtime
 min_runtime = st.text_input("Faixa de Runtime (minutos) - menor valor ⌚", placeholder="Ex: 120")
@@ -28,7 +28,7 @@ max_budget = int(max_budget) if max_budget else 0
 
 
 # 4. Gêneros do Filme
-genero_principal = st.text_input("Gênero principal do Filme 🎬", placeholder="Ex: Ação")
+genero_principal = st.text_input("Gênero principal do Filme 🎬", placeholder="Ex: Action")
 
 # Botão para processar os dados
 if st.button("Aplicar Filtros 🔍"):
