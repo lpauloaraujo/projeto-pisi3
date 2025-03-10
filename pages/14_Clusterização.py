@@ -146,7 +146,7 @@ with tab1:
     st.header("🎯 Escolha dos Clusters")
     st.write("A clusterização é uma técnica de aprendizado não supervisionado que tem como objetivo dividir um conjunto de dados em grupos de acordo com suas características. Neste projeto, utilizamos dois algoritmos de clusterização: KModes e KMeans. O KModes é um algoritmo que agrupa por dados categóricos, enquanto o KMeans agrupa por dados numéricos.")
     
-    st.subheader("Elbow Method (KMeans)")
+    st.subheader("Elbow Method (KModes)")
     st.image("imagens\Elbow Method KModes.png")
     st.write("O Elbow Method é um método utilizado para encontrar o número ideal de clusters em um conjunto de dados. O método consiste em plotar o valor da função objetivo (no caso, a soma dos quadrados das distâncias dos pontos ao centróide) em função do número de clusters. O ponto de inflexão do gráfico é o número ideal de clusters. No caso, 4.")
 
@@ -154,7 +154,7 @@ with tab1:
     st.image("imagens\Silhueta Kmeans.png")
     st.text("O método da silhueta é uma técnica de validação interna para medir a qualidade de um agrupamento. A técnica fornece uma maneira de avaliar a coerência interna de um agrupamento, ou seja, a distância média entre os pontos de um cluster e a distância média entre os pontos de clusters vizinhos.")
 
-    st.subheader("Elbow Method (KModes)")
+    st.subheader("Elbow Method (KMeans)")
     st.image("imagens\Elbow Method KMeans.png")
     st.text("O Elbow Method é um método utilizado para encontrar o número ideal de clusters em um conjunto de dados. O método consiste em plotar o valor da função objetivo (no caso, a soma dos quadrados das distâncias dos pontos ao centróide) em função do número de clusters. O ponto de inflexão do gráfico é o número ideal de clusters. No caso, 2.")
 
