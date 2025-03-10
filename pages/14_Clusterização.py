@@ -150,13 +150,13 @@ with tab1:
     st.image("imagens\Elbow Method KModes.png")
     st.write("O Elbow Method é um método utilizado para encontrar o número ideal de clusters em um conjunto de dados. O método consiste em plotar o valor da função objetivo (no caso, a soma dos quadrados das distâncias dos pontos ao centróide) em função do número de clusters. O ponto de inflexão do gráfico é o número ideal de clusters. No caso, 4.")
 
-    st.subheader("Silhueta (KMeans)")
-    st.image("imagens\Silhueta Kmeans.png")
-    st.text("O método da silhueta é uma técnica de validação interna para medir a qualidade de um agrupamento. A técnica fornece uma maneira de avaliar a coerência interna de um agrupamento, ou seja, a distância média entre os pontos de um cluster e a distância média entre os pontos de clusters vizinhos.")
-
     st.subheader("Elbow Method (KMeans)")
     st.image("imagens\Elbow Method KMeans.png")
     st.text("O Elbow Method é um método utilizado para encontrar o número ideal de clusters em um conjunto de dados. O método consiste em plotar o valor da função objetivo (no caso, a soma dos quadrados das distâncias dos pontos ao centróide) em função do número de clusters. O ponto de inflexão do gráfico é o número ideal de clusters. No caso, 2.")
+
+    st.subheader("Silhueta (KMeans)")
+    st.image("imagens\Silhueta Kmeans.png")
+    st.text("O método da silhueta é uma técnica de validação interna para medir a qualidade de um agrupamento. A técnica fornece uma maneira de avaliar a coerência interna de um agrupamento, ou seja, a distância média entre os pontos de um cluster e a distância média entre os pontos de clusters vizinhos.")
 
 with tab2:
     st.header("🔍 Entendendo os Clusters KModes")
